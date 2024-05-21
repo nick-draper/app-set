@@ -10,5 +10,6 @@ spec:
       - name: busybox
         image: busybox:latest
         command: ["echo", "hello"]
-
+      restartPolicy: Never
+  backoffLimit: 2
 
