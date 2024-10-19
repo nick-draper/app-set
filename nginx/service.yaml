@@ -2,10 +2,10 @@ apiVersion: v1
 kind: Service
 metadata:
   name: nginx-service
-  namespace: test
+  namespace: nginx-dev
 spec:
   selector:
-    app: nginx
+    app: nginx-dev
   ports:
   - name: http
     port: 80
