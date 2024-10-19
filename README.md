@@ -111,8 +111,9 @@ replicaset.apps/argocd-server-657f4898fc                     1         1        
 
 NAME                                             READY   AGE
 statefulset.apps/argocd-application-controller   1/1     118s
+```
 
-## Create applicationset yaml
+## Create ArcoCD applicationset yaml
 
 ```yaml
 apiVersion: argoproj.io/v1alpha1
@@ -140,13 +141,10 @@ spec:
       destination:
         server: https://kubernetes.default.svc
         namespace: '{{ if eq .env "prod" }}nginx{{ else }}nginx-{{.env}}{{ end }}'
-```
 
  ➜  minikube kubectl apply -f app-set.yaml
 applicationset.argoproj.io/nginx-application-set created
 ```
-
-
 
 ## Login using 'admin' and retrieved password
 
