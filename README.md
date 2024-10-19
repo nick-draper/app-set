@@ -113,7 +113,36 @@ NAME                                             READY   AGE
 statefulset.apps/argocd-application-controller   1/1     118s
 ```
 
-## Create ArcoCD applicationset yaml
+
+
+## ArgoCD
+
+Login to argoCD and manually sync the apps
+
+```sh
+➜  ~ kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d; echo
+XXXXXXXXXXXX
+
+
+➜  ~ kubectl port-forward svc/argocd-server -n argocd 8080:443
+Forwarding from 127.0.0.1:8080 -> 8080
+Forwarding from [::1]:8080 -> 8080
+Handling connection for 8080
+....
+```
+### Login using 'admin' and retrieved password
+
+![login](./login.png)
+
+### Create repo connection
+
+Type: HTTPS
+Project: default
+Repository URL: https://github.com/nick-draper/app-set.git
+
+![repo](./repo.png)
+
+### Create ArcoCD applicationset yaml
 
 ```yaml
 apiVersion: argoproj.io/v1alpha1
@@ -146,22 +175,8 @@ spec:
 applicationset.argoproj.io/nginx-application-set created
 ```
 
-## Login using 'admin' and retrieved password
+### Manual sync
 
-Login to argoCD and manually sync the apps
-
-```sh
-➜  ~ kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d; echo
-XXXXXXXXXXXX
-
-
-➜  ~ kubectl port-forward svc/argocd-server -n argocd 8080:443
-Forwarding from 127.0.0.1:8080 -> 8080
-Forwarding from [::1]:8080 -> 8080
-Handling connection for 8080
-....
-
-```
 
 ![home](./home.png)
 ![app](./app.png)
