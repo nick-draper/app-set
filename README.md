@@ -136,9 +136,9 @@ Handling connection for 8080
 
 ### Create repo connection
 
-Type: HTTPS
-Project: default
-Repository URL: https://github.com/nick-draper/app-set.git
+- Type: HTTPS
+- Project: default
+- Repository URL: https://github.com/nick-draper/app-set.git
 
 ![repo](./repo.png)
 
