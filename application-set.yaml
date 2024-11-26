@@ -1,0 +1,25 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: nginx-application-set
+  namespace: argocd
+spec:
+  goTemplate: true
+  generators:
+  - list:
+      elements:
+      - env: dev
+      - env: qa
+      - env: prod
+  template:
+    metadata:
+      name: 'nginx-{{.env}}'
+    spec:
+      project: default
+      source:
+        repoURL: https://github.com/nick-draper/app-set.git
+        targetRevision: '{{ if eq .env "prod" }}main{{ else }}{{.env}}{{ end }}'
+        path: nginx
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: '{{ if eq .env "prod" }}nginx{{ else }}nginx-{{.env}}{{ end }}'
