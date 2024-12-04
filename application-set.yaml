@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: nginx-application-set
+  name: gotham-ui-application-set
   namespace: argocd
 spec:
   goTemplate: true
@@ -9,17 +9,20 @@ spec:
   - list:
       elements:
       - env: dev
+        autoSync: true
+        prune: true
+        selfHeal: true
       - env: qa
+        autoSync: true
+        prune: true
+        selfHeal: true
       - env: prod
+        autoSync: fasle
   template:
     metadata:
       name: 'nginx-{{.env}}'
     spec:
       project: default
-      syncPolicy:
-        automated:
-          prune: '{{ if eq .env "prod" }}"true"{{ else }}"false"{{ end }}'
-          selfHeal: '{{ if eq .env "prod" }}"true"{{ else }}"false"{{ end }}'
       source:
         repoURL: https://github.com/nick-draper/app-set.git
         targetRevision: '{{ if eq .env "prod" }}main{{ else }}{{.env}}{{ end }}'
@@ -27,3 +30,11 @@ spec:
       destination:
         server: https://kubernetes.default.svc
         namespace: '{{ if eq .env "prod" }}nginx{{ else }}nginx-{{.env}}{{ end }}'
+  templatePatch: |
+    spec:
+    {{- if .autoSync }}
+      syncPolicy:
+        automated:
+          prune: {{ .prune }}
+          selfHeal: {{ .selfHeal }}
+    {{- end }}
