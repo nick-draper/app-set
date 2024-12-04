@@ -18,6 +18,8 @@ spec:
         selfHeal: true
       - env: prod
         autoSync: fasle
+        prune: true
+        selfHeal: true
   template:
     metadata:
       name: 'nginx-{{.env}}'
